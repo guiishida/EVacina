@@ -34,8 +34,16 @@
     <string name="allergy_jello">Alergia à Gelatina</string>
     <string name="allergy_yeast">Alergia à Levedura</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="user_main_menu">Minha Carteira</string>
+
+    <!-- Buttons Main Menu -->
+    <string name="button_new_vaccine">Registrar Nova Vacina</string>
+    <string name="button_visualize">Consultar Histórico de Vacinas</string>
+    <string name="button_generate_pdf">Gerar PDF da Carteira</string>
+    <string name="button_generate_certificates">Gerar Certificados</string>
+    <string name="button_maps">Recomendação Locais de Vacinação (MAPS)</string>
+    <string name="button_pending_vaccines">Vacinas Pendentes</string>
+
 
 
 </resources>
