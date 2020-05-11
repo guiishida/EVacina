@@ -8,16 +8,28 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.example.evacina.androidloginregisterrestfullwebservice.ApiUtils;
+import com.example.evacina.androidloginregisterrestfullwebservice.ResObjectModel;
+import com.example.evacina.androidloginregisterrestfullwebservice.UserService;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -26,6 +38,7 @@ public class RegisterActivity extends AppCompatActivity {
     TextInputLayout textInputLayoutFullName, textInputLayoutCPF, textInputLayoutBirthDate, textInputLayoutEmail;
     TextInputLayout textInputLayoutPassword, textInputLayoutConfirmedPassword;
     CheckBox checkBoxAllergyEggs, checkBoxAllergyProtein, checkboxAllergyYeast, checkboxAllergyJello;
+    UserService userService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,12 +46,13 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         initViews();
+        userService = ApiUtils.getUserService();
         buttonSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(validate()){
                     String FullName = editTextFullName.getText().toString();
-                    String CPF = editTextCPF.getText().toString();
+                    Long CPF = Long.valueOf(editTextCPF.getText().toString());
                     String Email = editTextEmail.getText().toString();
                     String Password = editTextPassword.getText().toString();
                     String BirthDate = editTextBirthDate.getText().toString(); //change to date later
@@ -47,12 +61,13 @@ public class RegisterActivity extends AppCompatActivity {
                     Boolean AllergyYeast = checkboxAllergyYeast.isChecked();
                     Boolean AllergyJello = checkboxAllergyJello.isChecked();
 
-                    //TODO Create user in the database
-                    // if user already exists in the db --> error message
-                    // if is a new user --> confirm creation and call Login Activity
-
-                    Intent intent = new Intent (RegisterActivity.this, LoginActivity.class);
-                    startActivity(intent);
+//                    Date BirthDate= null;
+//                    try {
+//                        BirthDate = new SimpleDateFormat("dd/MM/yyyy").parse(birthDate);
+//                    } catch (ParseException e) {
+//                        e.printStackTrace();
+//                    }
+                    registerUser(Email, Password, BirthDate, CPF, FullName, AllergyEgg, AllergyProtein, AllergyJello, AllergyYeast);
                 }
             }
         });
@@ -60,10 +75,47 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent (RegisterActivity.this, LoginActivity.class);
-                startActivity(intent);
+                //startActivity(intent);
             }
         });
 
+    }
+
+    private void registerUser(final String email, final String password, String birthDate, Long cpf, String fullName, Boolean allergyEgg,
+                              Boolean allergyProtein, Boolean allergyJello, Boolean allergyYeast) {
+
+        Call<String> call = userService.register(fullName, email, password, birthDate, cpf, allergyEgg, allergyJello, allergyProtein, allergyYeast);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response.isSuccessful()) {
+                    String resObj = response.body();
+                    if (resObj.equals("Saved")) {
+
+                        Toast.makeText(RegisterActivity.this, response.code(), Toast.LENGTH_SHORT).show();
+
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                                intent.putExtra("email", email);
+                                intent.putExtra("password", password);
+                                startActivity(intent);
+                            }
+                        }, 3000);
+
+                    }
+                }
+                else{
+                    Toast.makeText(RegisterActivity.this, response.code(), Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Toast.makeText(RegisterActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void initViews() {

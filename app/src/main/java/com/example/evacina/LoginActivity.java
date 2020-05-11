@@ -8,14 +8,22 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.example.evacina.androidloginregisterrestfullwebservice.ApiUtils;
+import com.example.evacina.androidloginregisterrestfullwebservice.ResObjectModel;
+import com.example.evacina.androidloginregisterrestfullwebservice.UserService;
 import com.google.android.material.textfield.TextInputLayout;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     Button buttonSignIn, buttonSignUp;
     EditText editTextLoginEmail, editTextLoginPassword;
     TextInputLayout textInputLayoutLoginEmail, textInputLayoutPassword;
+    UserService userService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +33,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         initViews();
         buttonSignUp.setOnClickListener(this);
         buttonSignIn.setOnClickListener(this);
+        userService = ApiUtils.getUserService();
 
     }
 
@@ -35,13 +44,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 if(validate()){
                     String Email = editTextLoginEmail.getText().toString();
                     String Password = editTextLoginPassword.getText().toString();
-
-                    //TODO Authenticate user is in the database
-                    // if user is in the db --> call homepage activity
-                    // if user is not in the db --> error message
-
-                    Intent intent = new Intent (LoginActivity.this, MainMenuActivity.class);
-                    startActivity(intent);
+                    doLogin(Email, Password);
                 }
 
                 break;
@@ -88,6 +91,31 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         }
         return valid;
+    }
+
+    private void doLogin(final String email, String password) {
+        Call call = userService.login(email, password);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response.isSuccessful()){
+                    String resObj = response.body();
+                    if(resObj.equals("Login feito com sucesso")){
+                        Intent intent = new Intent (LoginActivity.this, MainMenuActivity.class);
+                        intent.putExtra("email", email);
+                        startActivity(intent);
+                    }
+                }
+                else{
+                    Toast.makeText(LoginActivity.this, response.code(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Toast.makeText(LoginActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
 
