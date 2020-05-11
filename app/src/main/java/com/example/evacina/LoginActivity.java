@@ -1,7 +1,5 @@
 package com.example.evacina;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
@@ -10,10 +8,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.evacina.androidloginregisterrestfullwebservice.ApiUtils;
-import com.example.evacina.androidloginregisterrestfullwebservice.ResObjectModel;
 import com.example.evacina.androidloginregisterrestfullwebservice.UserService;
+import com.example.evacina.androidloginregisterrestfullwebservice.loginResponse;
 import com.google.android.material.textfield.TextInputLayout;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -94,13 +95,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void doLogin(final String email, String password) {
-        Call call = userService.login(email, password);
-        call.enqueue(new Callback<String>() {
+        Call<loginResponse> call = userService.login(email, password);
+        call.enqueue(new Callback<loginResponse>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
+            public void onResponse(Call<loginResponse> call, Response<loginResponse> response) {
                 if (response.isSuccessful()){
-                    String resObj = response.body();
-                    if(resObj.equals("Login feito com sucesso")){
+                    loginResponse resObj = response.body();
+                    if(resObj.getOk()){
                         Intent intent = new Intent (LoginActivity.this, MainMenuActivity.class);
                         intent.putExtra("email", email);
                         startActivity(intent);
@@ -112,7 +113,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onFailure(Call<loginResponse> call, Throwable t) {
                 Toast.makeText(LoginActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

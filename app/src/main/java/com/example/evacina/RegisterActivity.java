@@ -1,10 +1,6 @@
 package com.example.evacina;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,14 +13,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.evacina.androidloginregisterrestfullwebservice.ApiUtils;
-import com.example.evacina.androidloginregisterrestfullwebservice.ResObjectModel;
 import com.example.evacina.androidloginregisterrestfullwebservice.UserService;
+import com.example.evacina.androidloginregisterrestfullwebservice.registerResponse;
 import com.google.android.material.textfield.TextInputLayout;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -84,13 +75,13 @@ public class RegisterActivity extends AppCompatActivity {
     private void registerUser(final String email, final String password, String birthDate, Long cpf, String fullName, Boolean allergyEgg,
                               Boolean allergyProtein, Boolean allergyJello, Boolean allergyYeast) {
 
-        Call<String> call = userService.register(fullName, email, password, birthDate, cpf, allergyEgg, allergyJello, allergyProtein, allergyYeast);
-        call.enqueue(new Callback<String>() {
+        Call<registerResponse> call = userService.register(fullName, email, password, birthDate, cpf, allergyEgg, allergyJello, allergyProtein, allergyYeast);
+        call.enqueue(new Callback<registerResponse>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
+            public void onResponse(Call<registerResponse> call, Response<registerResponse> response) {
                 if (response.isSuccessful()) {
-                    String resObj = response.body();
-                    if (resObj.equals("Saved")) {
+                    registerResponse resObj = response.body();
+                    if (resObj.getOk()) {
 
                         Toast.makeText(RegisterActivity.this, response.code(), Toast.LENGTH_SHORT).show();
 
@@ -112,7 +103,7 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             }
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onFailure(Call<registerResponse> call, Throwable t) {
                 Toast.makeText(RegisterActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
