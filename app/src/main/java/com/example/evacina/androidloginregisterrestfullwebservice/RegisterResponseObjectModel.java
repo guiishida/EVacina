@@ -1,10 +1,14 @@
 package com.example.evacina.androidloginregisterrestfullwebservice;
 
-public class registerResponse {
+public class RegisterResponseObjectModel {
 
     private Boolean email_used;
     private Boolean cpf_used;
     private Boolean ok;
+
+    public RegisterResponseObjectModel() {
+        this.ok = false;
+    }
 
     public Boolean getEmail_used() {
         return email_used;
@@ -28,9 +32,5 @@ public class registerResponse {
 
     public void setEmail_used(final Boolean email_used) {
         this.email_used = email_used;
-    }
-
-    public registerResponse() {
-        this.ok = false;
     }
 }

@@ -1,10 +1,12 @@
 package com.example.evacina.androidloginregisterrestfullwebservice;
 
-public class loginResponse {
+public class LoginResponseObjectModel {
+
     private Boolean email_notfound;
     private Boolean ok;
-    public Boolean getOk() {
-        return ok;
+
+    public LoginResponseObjectModel() {
+        this.ok = false;
     }
 
     public Boolean getEmail_notfound() {
@@ -15,11 +17,11 @@ public class loginResponse {
         this.email_notfound = email_notfound;
     }
 
-    public void setOk(final Boolean ok) {
-        this.ok = ok;
+    public Boolean getOk() {
+        return ok;
     }
 
-    public loginResponse() {
-        this.ok = false;
+    public void setOk(Boolean ok) {
+        this.ok = ok;
     }
 }

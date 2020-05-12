@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.evacina.androidloginregisterrestfullwebservice.ApiUtils;
 import com.example.evacina.androidloginregisterrestfullwebservice.UserService;
-import com.example.evacina.androidloginregisterrestfullwebservice.loginResponse;
+import com.example.evacina.androidloginregisterrestfullwebservice.LoginResponseObjectModel;
 import com.google.android.material.textfield.TextInputLayout;
 
 import retrofit2.Call;
@@ -32,10 +32,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_login);
 
         initViews();
+        getFieldsFromRegister(getIntent());
+
         buttonSignUp.setOnClickListener(this);
         buttonSignIn.setOnClickListener(this);
         userService = ApiUtils.getUserService();
 
+    }
+
+    private void getFieldsFromRegister(Intent intent) {
+        String chargedEmail = intent.getStringExtra("email");
+        if(chargedEmail != null && !chargedEmail.isEmpty()){
+            editTextLoginEmail.setText(chargedEmail);
+        }
+        String chargedPassword = intent.getStringExtra("password");
+
+        if(chargedPassword != null && !chargedPassword.isEmpty()){
+            editTextLoginPassword.setText(chargedPassword);
+        }
     }
 
     @Override
@@ -95,16 +109,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void doLogin(final String email, String password) {
-        Call<loginResponse> call = userService.login(email, password);
-        call.enqueue(new Callback<loginResponse>() {
+        Call<LoginResponseObjectModel> call = userService.login(email, password);
+        call.enqueue(new Callback<LoginResponseObjectModel>() {
             @Override
-            public void onResponse(Call<loginResponse> call, Response<loginResponse> response) {
+            public void onResponse(Call<LoginResponseObjectModel> call, Response<LoginResponseObjectModel> response) {
                 if (response.isSuccessful()){
-                    loginResponse resObj = response.body();
-                    if(resObj.getOk()){
+                    LoginResponseObjectModel resObject = response.body();
+                    if(resObject.getOk()){
                         Intent intent = new Intent (LoginActivity.this, MainMenuActivity.class);
                         intent.putExtra("email", email);
                         startActivity(intent);
+                    }
+                    else if (resObject.getEmail_notfound()){
+                        Toast.makeText(LoginActivity.this,"Email ou senha incorretos", Toast.LENGTH_SHORT).show();
                     }
                 }
                 else{
@@ -113,7 +130,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
 
             @Override
-            public void onFailure(Call<loginResponse> call, Throwable t) {
+            public void onFailure(Call<LoginResponseObjectModel> call, Throwable t) {
                 Toast.makeText(LoginActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

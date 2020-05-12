@@ -14,10 +14,9 @@ import android.widget.Toast;
 
 import com.example.evacina.androidloginregisterrestfullwebservice.ApiUtils;
 import com.example.evacina.androidloginregisterrestfullwebservice.UserService;
-import com.example.evacina.androidloginregisterrestfullwebservice.registerResponse;
+import com.example.evacina.androidloginregisterrestfullwebservice.RegisterResponseObjectModel;
 import com.google.android.material.textfield.TextInputLayout;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -52,12 +51,6 @@ public class RegisterActivity extends AppCompatActivity {
                     Boolean AllergyYeast = checkboxAllergyYeast.isChecked();
                     Boolean AllergyJello = checkboxAllergyJello.isChecked();
 
-//                    Date BirthDate= null;
-//                    try {
-//                        BirthDate = new SimpleDateFormat("dd/MM/yyyy").parse(birthDate);
-//                    } catch (ParseException e) {
-//                        e.printStackTrace();
-//                    }
                     registerUser(Email, Password, BirthDate, CPF, FullName, AllergyEgg, AllergyProtein, AllergyJello, AllergyYeast);
                 }
             }
@@ -66,7 +59,7 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent (RegisterActivity.this, LoginActivity.class);
-                //startActivity(intent);
+                startActivity(intent);
             }
         });
 
@@ -75,15 +68,15 @@ public class RegisterActivity extends AppCompatActivity {
     private void registerUser(final String email, final String password, String birthDate, Long cpf, String fullName, Boolean allergyEgg,
                               Boolean allergyProtein, Boolean allergyJello, Boolean allergyYeast) {
 
-        Call<registerResponse> call = userService.register(fullName, email, password, birthDate, cpf, allergyEgg, allergyJello, allergyProtein, allergyYeast);
-        call.enqueue(new Callback<registerResponse>() {
+        Call<RegisterResponseObjectModel> call = userService.register(fullName, email, password, birthDate, cpf, allergyEgg, allergyJello, allergyProtein, allergyYeast);
+        call.enqueue(new Callback<RegisterResponseObjectModel>() {
             @Override
-            public void onResponse(Call<registerResponse> call, Response<registerResponse> response) {
+            public void onResponse(Call<RegisterResponseObjectModel> call, Response<RegisterResponseObjectModel> response) {
                 if (response.isSuccessful()) {
-                    registerResponse resObj = response.body();
-                    if (resObj.getOk()) {
+                    RegisterResponseObjectModel resObject = response.body();
 
-                        Toast.makeText(RegisterActivity.this, response.code(), Toast.LENGTH_SHORT).show();
+                    if (resObject.getOk()) {
+                        Toast.makeText(RegisterActivity.this, "Cadastro Efetuado com Sucesso!", Toast.LENGTH_SHORT).show();
 
                         new Handler().postDelayed(new Runnable() {
                             @Override
@@ -97,13 +90,20 @@ public class RegisterActivity extends AppCompatActivity {
                         }, 3000);
 
                     }
+                    else if (resObject.getEmail_used()){
+                        Toast.makeText(RegisterActivity.this, "O email escolhido já possui cadastro no EVacinas!", Toast.LENGTH_SHORT).show();
+                    }
+
+                    else if(resObject.getCpf_used()){
+                        Toast.makeText(RegisterActivity.this, "O CPF inserido já possui cadastro no EVacinas", Toast.LENGTH_SHORT).show();
+                    }
                 }
                 else{
                     Toast.makeText(RegisterActivity.this, response.code(), Toast.LENGTH_SHORT).show();
                 }
             }
             @Override
-            public void onFailure(Call<registerResponse> call, Throwable t) {
+            public void onFailure(Call<RegisterResponseObjectModel> call, Throwable t) {
                 Toast.makeText(RegisterActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
