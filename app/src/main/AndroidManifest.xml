@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.evacina"
-    android:versionName="1.0" >
+    android:versionName="1.0"
+    tools:ignore="GradleOverrides">
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -11,7 +14,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        tools:targetApi="m">
+        <meta-data
+            android:name="com.google.android.gms.vision.DEPENDENCIES"
+            android:value="barcode" />
         <activity android:name=".MainMenuActivity">
         </activity>
         <activity
@@ -19,6 +26,12 @@
             android:theme="@style/NoActionBarTheme" />
         <activity
             android:name=".LoginActivity"
+            android:theme="@style/NoActionBarTheme" />
+        <activity
+            android:name=".ScanActivity"
+            android:theme="@style/NoActionBarTheme" />
+        <activity
+            android:name=".NewVaccineActivity"
             android:theme="@style/NoActionBarTheme" />
         <activity
             android:name=".MainActivity"
