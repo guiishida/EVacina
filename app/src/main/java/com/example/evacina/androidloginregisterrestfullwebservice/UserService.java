@@ -6,10 +6,10 @@ import retrofit2.http.Query;
 
 public interface UserService {
 
-    @POST("api/login")
+    @POST("user/login")
     Call<LoginResponseObjectModel> login(@Query("email") String email, @Query("password") String password);
 
-    @POST("api/register")
+    @POST("user/register")
     Call<RegisterResponseObjectModel> register(@Query("name") String fullName, @Query("email") String email, @Query("password") String password,
                                                @Query("dateBirth") String dateBirth, @Query("cpf") Long CPF,
                                                @Query("eggAllergy") Boolean eggAllergy, @Query("jelloAllergy") Boolean jelloAllergy,
