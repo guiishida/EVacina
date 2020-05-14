@@ -30,8 +30,6 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
 
         initViews();
 
-
-
         buttonNewVaccine.setOnClickListener(this);
         buttonVisualize.setOnClickListener(this);
         buttonGeneratePDF.setOnClickListener(this);

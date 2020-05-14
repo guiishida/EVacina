@@ -5,17 +5,20 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.example.evacina.androidloginregisterrestfullwebservice.ApiUtils;
-import com.example.evacina.androidloginregisterrestfullwebservice.LoginResponseObjectModel;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,22 +29,42 @@ import com.example.evacina.androidloginregisterrestfullwebservice.VaccineRegiste
 
 public class ScanActivity extends AppCompatActivity {
 
-    TextView textView;
+    TextView textViewInstructions;
     VaccineService vaccineService;
     IntentIntegrator intentIntegrator;
+    Button buttonScan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayShowHomeEnabled(true);
+            actionBar.setTitle(R.string.registrar_vacina);
+        }
+
         setContentView(R.layout.activity_scan);
 
-        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.CAMERA}, PackageManager.PERMISSION_GRANTED);
+        final Activity activity = this;
+        initViews();
 
-        textView = findViewById(R.id.textView2);
-        vaccineService = ApiUtils.getVaccineService();
+        buttonScan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ActivityCompat.requestPermissions(activity,new String[]{Manifest.permission.CAMERA}, PackageManager.PERMISSION_GRANTED);
+                intentIntegrator = new IntentIntegrator(activity);
+                intentIntegrator.setBeepEnabled(false);
+                intentIntegrator.initiateScan();
+            }
+        });
 
-        intentIntegrator = new IntentIntegrator(this);
-        intentIntegrator.initiateScan();
+
+    }
+
+    private void initViews() {
+        textViewInstructions = findViewById(R.id.textViewRegisterNewVaccine);
+        buttonScan = findViewById(R.id.buttonScan);
     }
 
     @Override
@@ -52,7 +75,10 @@ public class ScanActivity extends AppCompatActivity {
             if (intentResult.getContents() == null) {
                 Toast.makeText(ScanActivity.this, "Scan Error", Toast.LENGTH_SHORT).show();
             } else {
-                doRegister(intentResult.getContents());
+                String barCode = intentResult.getContents();
+                Toast.makeText(ScanActivity.this, barCode, Toast.LENGTH_SHORT).show();
+                vaccineService = ApiUtils.getVaccineService();
+                //doRegister(barCode);
             }
         }
         super.onActivityResult(requestCode, resultCode, data);

@@ -120,7 +120,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         intent.putExtra("email", email);
                         startActivity(intent);
                     }
-                    else if (resObject.getEmail_notfound()){
+                    else {
                         Toast.makeText(LoginActivity.this,"Email ou senha incorretos", Toast.LENGTH_SHORT).show();
                     }
                 }

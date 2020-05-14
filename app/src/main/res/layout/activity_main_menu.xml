@@ -9,81 +9,75 @@
 
     <Button
         android:id="@+id/buttonNewVaccine"
-        android:layout_width="156dp"
+        android:layout_width="150dp"
         android:layout_height="128dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
+        android:layout_marginStart="28dp"
         android:layout_marginTop="75dp"
+        android:background="@color/colorLightBlue"
         android:padding="3dp"
         android:text="@string/button_new_vaccine"
-        android:background="@color/colorLightBlue"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/buttonVisualize"
-        android:layout_width="156dp"
+        android:layout_width="150dp"
         android:layout_height="128dp"
         android:layout_marginTop="75dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
+        android:layout_marginEnd="28dp"
+        android:background="#66ff66"
         android:padding="3dp"
         android:text="@string/button_visualize"
-        android:background="#66ff66"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/buttonGeneratePDF"
-        android:layout_width="156dp"
+        android:layout_width="150dp"
         android:layout_height="128dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
+        android:layout_marginStart="28dp"
         android:layout_marginTop="50dp"
+        android:background="#f76666"
         android:padding="3dp"
         android:text="@string/button_generate_pdf"
-        android:background="#f76666"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonNewVaccine"/>
+        app:layout_constraintTop_toBottomOf="@+id/buttonNewVaccine" />
 
     <Button
         android:id="@+id/buttonGenerateCertificates"
-        android:layout_width="156dp"
+        android:layout_width="150dp"
         android:layout_height="128dp"
         android:layout_marginTop="50dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
-        android:text="@string/button_generate_certificates"
-        android:padding="10dp"
+        android:layout_marginEnd="28dp"
         android:background="#ffb266"
+        android:padding="10dp"
+        android:text="@string/button_generate_certificates"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonVisualize" />
 
     <Button
         android:id="@+id/buttonMaps"
-        android:layout_width="156dp"
+        android:layout_width="150dp"
         android:layout_height="128dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
+        android:layout_marginStart="28dp"
         android:layout_marginTop="50dp"
+        android:background="#cc99ff"
         android:padding="3dp"
         android:text="@string/button_maps"
-        android:background="#cc99ff"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonGeneratePDF" />
 
     <Button
         android:id="@+id/buttonPendingVaccines"
-        android:layout_width="156dp"
+        android:layout_width="150dp"
         android:layout_height="128dp"
         android:layout_marginTop="50dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
+        android:layout_marginEnd="28dp"
+        android:background="#ffff66"
         android:padding="10dp"
         android:text="@string/button_pending_vaccines"
-        android:background="#ffff66"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonGenerateCertificates"/>
+        app:layout_constraintTop_toBottomOf="@+id/buttonGenerateCertificates" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
