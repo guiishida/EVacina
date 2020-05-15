@@ -16,6 +16,7 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
     EditText editTextLogin;
     TextInputLayout layout;
     Button buttonNewVaccine, buttonVisualize, buttonGeneratePDF, buttonGenerateCertificates, buttonMaps, buttonPendingVaccines;
+    private String Email;
 
 
     @Override
@@ -26,6 +27,7 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
             actionBar.setDisplayShowHomeEnabled(true);
             actionBar.setTitle(R.string.user_main_menu);
         }
+        Email = getIntent().getStringExtra("email");
         setContentView(R.layout.activity_main_menu);
 
         initViews();
@@ -43,6 +45,7 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
         switch (view.getId()) {
             case R.id.buttonNewVaccine:
                 Intent intent = new Intent(MainMenuActivity.this, ScanActivity.class);
+                intent.putExtra("email", Email);
                 startActivity(intent);
                 break;
             case R.id.buttonVisualize:

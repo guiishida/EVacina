@@ -4,22 +4,38 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class NewVaccineActivity extends AppCompatActivity {
 
+    String name_vaccine, producer, disease;
+    Long barcode;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_vaccine);
-        TextView textv = findViewById(R.id.tv2);
-        Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
 
-        if(bundle!=null){
-            String code = (String) bundle.get("code");
-            textv.setText(code);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayShowHomeEnabled(true);
+            actionBar.setTitle(R.string.registrar_vacina);
         }
+        setContentView(R.layout.activity_new_vaccine);
+
+        Intent intent = getIntent();
+        getVaccineData(intent);
+
+        //TODO dependendo do layout criar e setar o valor dos elementos com os valores definidos em getVaccineData()
+
+
+    }
+
+    private void getVaccineData(Intent intent){
+        name_vaccine = intent.getStringExtra("nameVaccine");
+        barcode = intent.getLongExtra("barcode",0L);
+        disease = intent.getStringExtra("disease");
+        producer = intent.getStringExtra("producer");
     }
 
 }

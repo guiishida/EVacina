@@ -34,6 +34,8 @@ public class ScanActivity extends AppCompatActivity {
     IntentIntegrator intentIntegrator;
     Button buttonScan;
 
+    private String Email;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +46,7 @@ public class ScanActivity extends AppCompatActivity {
             actionBar.setTitle(R.string.registrar_vacina);
         }
 
+        Email = getIntent().getStringExtra("email");
         setContentView(R.layout.activity_scan);
 
         final Activity activity = this;
@@ -76,16 +79,15 @@ public class ScanActivity extends AppCompatActivity {
                 Toast.makeText(ScanActivity.this, "Scan Error", Toast.LENGTH_SHORT).show();
             } else {
                 String barCode = intentResult.getContents();
-                Toast.makeText(ScanActivity.this, barCode, Toast.LENGTH_SHORT).show();
                 vaccineService = ApiUtils.getVaccineService();
-                //doRegister(barCode);
+                doRegister(Long.parseLong(barCode), Email);
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void doRegister(final String code) {
-        Call<VaccineRegisterResponseObjectModel> call = vaccineService.register(code);
+    private void doRegister(final Long code, String email) {
+        Call<VaccineRegisterResponseObjectModel> call = vaccineService.register(code, email);
         call.enqueue(new Callback<VaccineRegisterResponseObjectModel>() {
             @Override
             public void onResponse(Call<VaccineRegisterResponseObjectModel> call, Response<VaccineRegisterResponseObjectModel> response) {
@@ -93,7 +95,10 @@ public class ScanActivity extends AppCompatActivity {
                     VaccineRegisterResponseObjectModel resObject = response.body();
                     if(resObject.getOk()){
                         Intent intent = new Intent (ScanActivity.this, NewVaccineActivity.class);
-                        intent.putExtra("code", code);
+                        intent.putExtra("barcode", code);
+                        intent.putExtra("nameVaccine", resObject.getName_vaccine());
+                        intent.putExtra("disease", resObject.getDisease());
+                        intent.putExtra("producer", resObject.getProducer());
                         startActivity(intent);
                     }
                     else {
