@@ -51,6 +51,22 @@
     <string name="register_new_vaccine_field">Para registrar uma nova vacina, basta scanear o código de barras da mesma, apertando o botão abaixo</string>
     <string name="button_scan">Scanear</string>
     <string name="textview2">TextView2</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="permission_required_toast" />
+    <string name="permission_rationale_location" />
+    <string name="location_permission_denied" />
+    <string name="nova_vacina">Nova Vacina</string>
+
+    <string name="button_confirma">Confirma</string>
+    <string name="codigodebarras">Código de Barras:</string>
+    <string name="name_vaccine_text">name_vaccine</string>
+    <string name="disease_text">disease</string>
+    <string name="producer_text">producer</string>
+    <string name="barcode_text">barcode</string>
+    <string name="app_logo">app logo</string>
+    <string name="cancela">Cancela</string>
+    <string name="textConfirma">Confirme se as informações da sua vacina estão corretas: </string>
+    <string name="fabricante">Fabricante:</string>
 
 
 </resources>
