@@ -1,6 +1,8 @@
 <resources>
 
     <string name="app_name">EVacina</string>
+    <string name="app_logo_description">app logo</string>
+
 
     <!-- Login and Register Pages-->
     <string name="button_sign_in">ENTRAR</string>
@@ -59,14 +61,17 @@
 
     <string name="button_confirma">Confirma</string>
     <string name="codigodebarras">Código de Barras:</string>
-    <string name="name_vaccine_text">name_vaccine</string>
-    <string name="disease_text">disease</string>
-    <string name="producer_text">producer</string>
-    <string name="barcode_text">barcode</string>
-    <string name="app_logo">app logo</string>
+    <string name="name_vaccine_text">Vaccine Name</string>
+    <string name="disease_text">Disease</string>
+    <string name="producer_text">Producer</string>
+    <string name="barcode_text">Barcode</string>
     <string name="cancela">Cancela</string>
     <string name="textConfirma">Confirme se as informações da sua vacina estão corretas: </string>
     <string name="fabricante">Fabricante:</string>
 
 
+
+    <string name="carteira">Carteira de Vacinação</string>
+    <string name="date_text">Date</string>
+    <string name="voltar">Voltar</string>
 </resources>

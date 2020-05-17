@@ -44,11 +44,14 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.buttonNewVaccine:
-                Intent intent = new Intent(MainMenuActivity.this, ScanActivity.class);
-                intent.putExtra("email", Email);
-                startActivity(intent);
+                Intent newVaccineIntent = new Intent(MainMenuActivity.this, ScanActivity.class);
+                newVaccineIntent.putExtra("email", Email);
+                startActivity(newVaccineIntent);
                 break;
             case R.id.buttonVisualize:
+                Intent visualizeIntent = new Intent(MainMenuActivity.this, VisualizeActivity.class);
+                visualizeIntent.putExtra("email", Email);
+                startActivity(visualizeIntent);
                 break;
             case R.id.buttonGeneratePDF:
                 break;

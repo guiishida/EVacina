@@ -19,16 +19,12 @@
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="barcode" />
-        <activity android:name=".MainMenuActivity">
-        </activity>
         <activity
             android:name=".RegisterActivity"
             android:theme="@style/NoActionBarTheme" />
         <activity
             android:name=".LoginActivity"
             android:theme="@style/NoActionBarTheme" />
-        <activity
-            android:name=".ScanActivity" />
         <activity
             android:name=".NewVaccineActivity"
             android:theme="@style/NoActionBarTheme" />
@@ -41,6 +37,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".MainMenuActivity"
+            android:exported="true"/>   <!--//TODO: REMOVE THIS BEFORE RELEASE -->
+        <activity android:name=".ScanActivity" />
+        <activity android:name=".VisualizeActivity"/>
     </application>
 
 </manifest>
