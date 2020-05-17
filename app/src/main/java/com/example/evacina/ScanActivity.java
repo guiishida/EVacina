@@ -87,7 +87,7 @@ public class ScanActivity extends AppCompatActivity {
     }
 
     private void doRegister(final Long code) {
-        Call<VaccineRegisterResponseObjectModel> call = vaccineService.register(code);
+        Call<VaccineRegisterResponseObjectModel> call = vaccineService.register(code, Email);
         call.enqueue(new Callback<VaccineRegisterResponseObjectModel>() {
             @Override
             public void onResponse(Call<VaccineRegisterResponseObjectModel> call, Response<VaccineRegisterResponseObjectModel> response) {
@@ -100,6 +100,7 @@ public class ScanActivity extends AppCompatActivity {
                         intent.putExtra("nameVaccine", resObject.getName_vaccine());
                         intent.putExtra("disease", resObject.getDisease());
                         intent.putExtra("producer", resObject.getProducer());
+                        intent.putExtra("vaccine_id", resObject.getVaccine_id());
                         startActivity(intent);
                     }
                     else {

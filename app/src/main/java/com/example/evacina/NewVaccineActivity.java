@@ -22,7 +22,7 @@ import retrofit2.Response;
 public class NewVaccineActivity extends AppCompatActivity implements View.OnClickListener {
 
     private String name_vaccine, producer, disease, Email;
-    private Long barcode;
+    private Long barcode, vaccine_id;
     VaccineService vaccineService;
     TextView name_vaccineTv, producerTv, diseaseTv, barcodeTv;
     Button buttonConfirma, buttonCancela;
@@ -59,41 +59,45 @@ public class NewVaccineActivity extends AppCompatActivity implements View.OnClic
         barcode = intent.getLongExtra("barcode", 0L);
         disease = intent.getStringExtra("disease");
         producer = intent.getStringExtra("producer");
-        Email = getIntent().getStringExtra("email");
+        vaccine_id = intent.getLongExtra("vaccine_id",0L);
+        Email = intent.getStringExtra("email");
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.buttonConfirma:
-                vaccineService = ApiUtils.getVaccineService();
-                doConfirmRegister(barcode, Email);
-                Intent intent = new Intent (NewVaccineActivity.this, MainMenuActivity.class);
-                intent.putExtra("email", Email);
-                startActivity(intent);
+                Toast.makeText(NewVaccineActivity.this,"Vacina registrada com sucesso", Toast.LENGTH_LONG).show();
+                Intent mainMenuIntent = new Intent (NewVaccineActivity.this, MainMenuActivity.class);
+                mainMenuIntent.putExtra("email", Email);
+                startActivity(mainMenuIntent);
                 break;
             case R.id.buttonCancela:
+                vaccineService = ApiUtils.getVaccineService();
+                doRegisterCancel();
                 Intent scanIntent = new Intent(NewVaccineActivity.this, ScanActivity.class);
+                scanIntent.putExtra("email", Email);
                 startActivity(scanIntent);
+                break;
         }
     }
 
-    public void doConfirmRegister(final Long code, final String Email){
-        Call<Boolean> call = vaccineService.register_ok(code, Email);
+    public void doRegisterCancel(){
+        Call<Boolean> call = vaccineService.register_cancel(vaccine_id);
         call.enqueue(new Callback<Boolean>() {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                 if (response.isSuccessful()){
                     Boolean resObject = response.body();
-                    if(resObject){
-                        Toast.makeText(NewVaccineActivity.this,"Vacina registrada com sucesso", Toast.LENGTH_LONG).show();
+                    if (resObject) {
+                        Toast.makeText(NewVaccineActivity.this, "Registro Cancelado", Toast.LENGTH_LONG).show();
                     }
-                    else {
-                        Toast.makeText(NewVaccineActivity.this,"Não foi possível registrar vacina", Toast.LENGTH_SHORT).show();
+                    else{
+                        Toast.makeText(NewVaccineActivity.this, "Registro não foi Cancelado", Toast.LENGTH_LONG).show();
                     }
                 }
                 else{
-                    Toast.makeText(NewVaccineActivity.this, response.code(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NewVaccineActivity.this, response.code(), Toast.LENGTH_LONG).show();
                 }
             }
 

@@ -7,8 +7,8 @@ import retrofit2.http.Query;
 public interface VaccineService {
 
     @POST("vaccine/register")
-    Call<VaccineRegisterResponseObjectModel> register(@Query("code") Long code);
+    Call<VaccineRegisterResponseObjectModel> register(@Query("code") Long code, @Query("email") String email);
 
-    @POST("vaccine/register/ok")
-    Call<Boolean> register_ok(@Query("code") Long code, @Query("email") String email);
+    @POST("vaccine/register/cancel")
+    Call<Boolean> register_cancel(@Query("vaccine_id") Long vaccine_id);
 }

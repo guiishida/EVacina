@@ -14,6 +14,8 @@ public class VaccineRegisterResponseObjectModel {
 
     private String producer;
 
+    private Long vaccine_id;
+
     //private Date date;
 
     public VaccineRegisterResponseObjectModel() {
@@ -66,5 +68,13 @@ public class VaccineRegisterResponseObjectModel {
 
     public void setOk(Boolean ok) {
         this.ok = ok;
+    }
+
+    public Long getVaccine_id() {
+        return vaccine_id;
+    }
+
+    public void setVaccine_id(Long vaccine_id) {
+        this.vaccine_id = vaccine_id;
     }
 }
