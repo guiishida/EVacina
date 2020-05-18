@@ -58,6 +58,9 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
             case R.id.buttonGenerateCertificates:
                 break;
             case R.id.buttonMaps:
+                Intent mapsIntent = new Intent(MainMenuActivity.this, MapsActivity.class);
+                mapsIntent.putExtra("email", Email);
+                startActivity(mapsIntent);
                 break;
             case R.id.buttonPendingVaccines:
                 break;
