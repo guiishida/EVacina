@@ -47,6 +47,7 @@ public class VisualizeActivity extends AppCompatActivity {
 
         vaccineService = ApiUtils.getVaccineService();
         getData();
+        initView();
     }
 
 
@@ -57,7 +58,7 @@ public class VisualizeActivity extends AppCompatActivity {
             public void onResponse(Call<ArrayList<VaccineView>> call, Response<ArrayList<VaccineView>> response) {
                 if (response.isSuccessful()){
                     vaccineViewArrayList = response.body();
-                    initView();
+                    initGrid();
                 }
                 else{
                     Toast.makeText(VisualizeActivity.this, response.code(), Toast.LENGTH_LONG).show();
@@ -78,10 +79,6 @@ public class VisualizeActivity extends AppCompatActivity {
     }
 
     public void initView(){
-        grid_view = findViewById(R.id.grid_view);
-        vaccineAdapter = new VaccineAdapter(this, vaccineViewArrayList);
-        grid_view.setAdapter(vaccineAdapter);
-
         buttonMenu = findViewById(R.id.buttonMenu);
         buttonMenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,5 +88,11 @@ public class VisualizeActivity extends AppCompatActivity {
                 startActivity(mainMenuIntent);
             }
         });
+    }
+
+    private void initGrid() {
+        grid_view = findViewById(R.id.grid_view);
+        vaccineAdapter = new VaccineAdapter(this, vaccineViewArrayList);
+        grid_view.setAdapter(vaccineAdapter);
     }
 }

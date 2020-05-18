@@ -80,14 +80,14 @@ public class ScanActivity extends AppCompatActivity {
             } else {
                 String barCode = intentResult.getContents();
                 vaccineService = ApiUtils.getVaccineService();
-                doRegister(Long.parseLong(barCode));
+                doCheckVaccineExistence(Long.parseLong(barCode));
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void doRegister(final Long code) {
-        Call<VaccineRegisterResponseObjectModel> call = vaccineService.register(code, Email);
+    private void doCheckVaccineExistence(final Long code) {
+        Call<VaccineRegisterResponseObjectModel> call = vaccineService.check_existence(code);
         call.enqueue(new Callback<VaccineRegisterResponseObjectModel>() {
             @Override
             public void onResponse(Call<VaccineRegisterResponseObjectModel> call, Response<VaccineRegisterResponseObjectModel> response) {
@@ -100,7 +100,6 @@ public class ScanActivity extends AppCompatActivity {
                         intent.putExtra("nameVaccine", resObject.getName_vaccine());
                         intent.putExtra("disease", resObject.getDisease());
                         intent.putExtra("producer", resObject.getProducer());
-                        intent.putExtra("vaccine_id", resObject.getVaccine_id());
                         startActivity(intent);
                     }
                     else {
