@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/nova_vacina"
+        android:textAlignment="center"
+        android:textColor="@color/colorBlueGreenish"
+        android:textSize="36sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+
+    <Button
+        android:id="@+id/buttonConfirma"
+        android:layout_width="176dp"
+        android:layout_height="69dp"
+        android:layout_marginBottom="73dp"
+        android:background="@drawable/sign_in_button_style"
+        android:text="@string/button_confirma"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/buttonCancela" />
+
+    <TextView
+        android:id="@+id/disease_text"
+        android:layout_width="256dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/border"
+        android:backgroundTint="#37403D3D"
+        android:text="@string/disease_text"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimaryBlack"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/fabricante"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/name_vaccine_text" />
+
+    <TextView
+        android:id="@+id/producer_text"
+        android:layout_width="256dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/border"
+        android:backgroundTint="#37403D3D"
+        android:text="@string/producer_text"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimaryBlack"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/codigodebarras"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fabricante" />
+
+    <TextView
+        android:id="@+id/codigodebarras"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:text="@string/codigodebarras"
+        android:textAlignment="center"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/barcode_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/producer_text" />
+
+    <TextView
+        android:id="@+id/barcode_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="60dp"
+        android:text="@string/barcode_text"
+        android:textAlignment="center"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonConfirma"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/codigodebarras"
+        tools:ignore="SmallSp" />
+
+    <TextView
+        android:id="@+id/fabricante"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="10dp"
+        android:text="@string/fabricante"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/producer_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/disease_text" />
+
+    <TextView
+        android:id="@+id/name_vaccine_text"
+        android:layout_width="256dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/border"
+        android:backgroundTint="#37403D3D"
+        android:text="@string/name_vaccine_text"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimaryBlack"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/disease_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textConfirma" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="69dp"
+        android:layout_height="72dp"
+        android:contentDescription="@string/app_logo_description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo_app_no_name" />
+
+    <Button
+        android:id="@+id/buttonCancela"
+        android:layout_width="116dp"
+        android:layout_height="56dp"
+        android:text="@string/cancela"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonConfirma"
+        app:layout_constraintEnd_toStartOf="@+id/buttonConfirma"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/buttonConfirma" />
+
+    <TextView
+        android:id="@+id/textConfirma"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/textConfirma"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

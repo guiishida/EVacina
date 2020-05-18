@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.evacina"
-    android:versionName="1.0" >
+    android:versionName="1.0"
+    tools:ignore="GradleOverrides">
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -11,14 +14,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true">
-        <activity android:name=".MainMenuActivity">
-        </activity>
+        android:usesCleartextTraffic="true"
+        tools:targetApi="m">
+        <meta-data
+            android:name="com.google.android.gms.vision.DEPENDENCIES"
+            android:value="barcode" />
         <activity
             android:name=".RegisterActivity"
             android:theme="@style/NoActionBarTheme" />
         <activity
             android:name=".LoginActivity"
+            android:theme="@style/NoActionBarTheme" />
+        <activity
+            android:name=".NewVaccineActivity"
             android:theme="@style/NoActionBarTheme" />
         <activity
             android:name=".MainActivity"
@@ -29,6 +37,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".MainMenuActivity"
+            android:exported="true"/>   <!--//TODO: REMOVE THIS BEFORE RELEASE -->
+        <activity android:name=".ScanActivity" />
+        <activity android:name=".VisualizeActivity"/>
     </application>
 
 </manifest>
