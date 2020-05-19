@@ -3,6 +3,7 @@ package com.example.evacina;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -21,8 +22,10 @@ import retrofit2.Response;
 
 public class NewVaccineActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private static final String TAG = "NewVaccineActivity";
     private String name_vaccine, producer, disease, Email;
     private Long barcode, vaccine_id;
+
     VaccineService vaccineService;
     TextView name_vaccineTv, producerTv, diseaseTv, barcodeTv;
     Button buttonConfirma, buttonCancela;
@@ -67,6 +70,7 @@ public class NewVaccineActivity extends AppCompatActivity implements View.OnClic
         switch (v.getId()) {
             case R.id.buttonConfirma:
                 vaccineService = ApiUtils.getVaccineService();
+                Log.d(TAG, "Start of Post Request to save vaccine on the database");
                 doRegister();
                 break;
             case R.id.buttonCancela:
@@ -84,6 +88,7 @@ public class NewVaccineActivity extends AppCompatActivity implements View.OnClic
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                 if (response.isSuccessful()){
+                    Log.d(TAG, "Request Response is OK");
                     Boolean resObject = response.body();
                     if (resObject) {
                         Toast.makeText(NewVaccineActivity.this,"Vacina registrada com sucesso", Toast.LENGTH_LONG).show();
@@ -99,12 +104,14 @@ public class NewVaccineActivity extends AppCompatActivity implements View.OnClic
                     }
                 }
                 else{
-                    Toast.makeText(NewVaccineActivity.this, response.code(), Toast.LENGTH_LONG).show();
+                    Log.e(TAG, "The request response was not successful: " + response.code());
+                    Toast.makeText(NewVaccineActivity.this, "A requisição não obteve sucesso. Tente novamente", Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Boolean> call, Throwable t) {
+                Log.e(TAG, "The request to the server failed: " + t.getMessage());
                 Toast.makeText(NewVaccineActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

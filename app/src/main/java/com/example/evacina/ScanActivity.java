@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -28,6 +29,8 @@ import com.example.evacina.androidloginregisterrestfullwebservice.VaccineService
 import com.example.evacina.androidloginregisterrestfullwebservice.VaccineRegisterResponseObjectModel;
 
 public class ScanActivity extends AppCompatActivity {
+
+    private static final String TAG = "ScanActivity";
 
     TextView textViewInstructions;
     VaccineService vaccineService;
@@ -56,6 +59,7 @@ public class ScanActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 ActivityCompat.requestPermissions(activity,new String[]{Manifest.permission.CAMERA}, PackageManager.PERMISSION_GRANTED);
+                Log.d(TAG, "Lançamento do Scan");
                 intentIntegrator = new IntentIntegrator(activity);
                 intentIntegrator.setBeepEnabled(false);
                 intentIntegrator.initiateScan();
@@ -80,6 +84,7 @@ public class ScanActivity extends AppCompatActivity {
             } else {
                 String barCode = intentResult.getContents();
                 vaccineService = ApiUtils.getVaccineService();
+                Log.d(TAG, "Checagem da existência da vacina na database");
                 doCheckVaccineExistence(Long.parseLong(barCode));
             }
         }
@@ -94,6 +99,7 @@ public class ScanActivity extends AppCompatActivity {
                 if (response.isSuccessful()){
                     VaccineRegisterResponseObjectModel resObject = response.body();
                     if(resObject.getOk()){
+                        Log.d(TAG, "Request Response is OK");
                         Intent intent = new Intent (ScanActivity.this, NewVaccineActivity.class);
                         intent.putExtra("email", Email);
                         intent.putExtra("barcode", code);
@@ -108,13 +114,15 @@ public class ScanActivity extends AppCompatActivity {
                     }
                 }
                 else{
-                    Toast.makeText(ScanActivity.this, response.code(), Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "The request response was not successful: " + response.code());
+                    Toast.makeText(ScanActivity.this, "A requisição não obteve sucesso. Tente novamente", Toast.LENGTH_SHORT).show();
                     intentIntegrator.initiateScan();
                 }
             }
 
             @Override
             public void onFailure(Call<VaccineRegisterResponseObjectModel> call, Throwable t) {
+                Log.e(TAG, "The request to the server failed: " + t.getMessage());
                 Toast.makeText(ScanActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
