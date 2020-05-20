@@ -2,6 +2,7 @@ package com.example.evacina;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -20,6 +21,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private static final String TAG = "LoginActivity";
 
     Button buttonSignIn, buttonSignUp;
     EditText editTextLoginEmail, editTextLoginPassword;
@@ -59,6 +62,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 if(validate()){
                     String Email = editTextLoginEmail.getText().toString();
                     String Password = editTextLoginPassword.getText().toString();
+                    Log.d(TAG, "Start of HTTP Request");
                     doLogin(Email, Password);
                 }
 
@@ -114,8 +118,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onResponse(Call<LoginResponseObjectModel> call, Response<LoginResponseObjectModel> response) {
                 if (response.isSuccessful()){
+                    Log.d(TAG, "Request Response is OK");
                     LoginResponseObjectModel resObject = response.body();
                     if(resObject.getOk()){
+                        Log.d(TAG, "user has just logged in with email: " + email);
                         Intent intent = new Intent (LoginActivity.this, MainMenuActivity.class);
                         intent.putExtra("email", email);
                         startActivity(intent);
@@ -125,12 +131,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     }
                 }
                 else{
-                    Toast.makeText(LoginActivity.this, response.code(), Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "The request response was not successful: " + response.code());
+                    Toast.makeText(LoginActivity.this, "A requisição não obteve sucesso. Tente novamente", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<LoginResponseObjectModel> call, Throwable t) {
+                Log.e(TAG, "The request to the server failed: " + t.getMessage());
                 Toast.makeText(LoginActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
