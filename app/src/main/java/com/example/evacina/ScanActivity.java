@@ -4,12 +4,13 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +22,14 @@ import androidx.core.content.ContextCompat;
 
 import com.example.evacina.androidloginregisterrestfullwebservice.ApiUtils;
 import com.example.evacina.androidloginregisterrestfullwebservice.PermissionUtils;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.PlaceLikelihood;
+import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest;
+import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse;
+import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -32,25 +41,28 @@ import retrofit2.Response;
 import com.example.evacina.androidloginregisterrestfullwebservice.VaccineService;
 import com.example.evacina.androidloginregisterrestfullwebservice.VaccineRegisterResponseObjectModel;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
-public class ScanActivity extends AppCompatActivity implements LocationListener {
 
+public class ScanActivity extends AppCompatActivity {
+
+    private static final String TAG = "LogSCAN";
     TextView textViewInstructions;
     VaccineService vaccineService;
     IntentIntegrator intentIntegrator;
     Button buttonScan;
+    Spinner spinnerPlaces;
 
     private String Email;
+    private String locationName;
+
+    PlacesClient placesClient;
+    List<String> placesList;
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
-    // The minimum distance to change Updates in meters
-    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
-    // The minimum time between updates in milliseconds
-    private static final long MIN_TIME_BW_UPDATES = 1000 * 60; // 1 minute
-    protected LocationManager locationManager;
-    private Location location;
-    private double latitude; // latitude
-    private double longitude; // longitude
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,67 +74,95 @@ public class ScanActivity extends AppCompatActivity implements LocationListener 
             actionBar.setTitle(R.string.registrar_vacina);
         }
 
+        // Initialize the SDK
+        Places.initialize(getApplicationContext(), "AIzaSyDEhPNOttaqhEviF6EcVXLyb02jXxZPhaE");
+
+        // Create a new Places client instance
+        placesClient = Places.createClient(this);
+        placesList = new ArrayList<>();
 
         Email = getIntent().getStringExtra("email");
 
         setContentView(R.layout.activity_scan);
 
-        final Activity activity = this;
         initViews();
-        getLocation();
+        getCurrentLocation(this);
 
-        buttonScan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.CAMERA}, PackageManager.PERMISSION_GRANTED);
-                intentIntegrator = new IntentIntegrator(activity);
-                intentIntegrator.setBeepEnabled(false);
-                intentIntegrator.initiateScan();
-            }
-        });
     }
 
-    private void getLocation() {
-        locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
+    private void getCurrentLocation(Activity activity) {
+        List<Place.Field> placeFields = new ArrayList<>();
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            locationManager.requestLocationUpdates(
-                    LocationManager.NETWORK_PROVIDER,
-                    MIN_TIME_BW_UPDATES,
-                    MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-            if (locationManager != null) {
-                location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                if (location != null) {
-                    latitude = location.getLatitude();
-                    longitude = location.getLongitude();
-                } else {
-                    locationManager.requestLocationUpdates(
-                            LocationManager.GPS_PROVIDER,
-                            MIN_TIME_BW_UPDATES,
-                            MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-                    if (locationManager != null) {
-                        location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                        if (location != null) {
-                            latitude = location.getLatitude();
-                            longitude = location.getLongitude();
+        // Add fields to define the data types to return.
+        placeFields.add(Place.Field.NAME);
+        placeFields.add(Place.Field.TYPES);
+        placeFields.add(Place.Field.ADDRESS);
+        placeFields.add(Place.Field.LAT_LNG);
+
+
+        // Use the builder to create a FindCurrentPlaceRequest.
+        FindCurrentPlaceRequest request = FindCurrentPlaceRequest.newInstance(placeFields);
+
+        // Call findCurrentPlace and handle the response (first check that the user has granted permission).
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            Task<FindCurrentPlaceResponse> placeResponse = placesClient.findCurrentPlace(request);
+            placeResponse.addOnCompleteListener(task -> {
+                if (task.isSuccessful()){
+                    FindCurrentPlaceResponse response = task.getResult();
+                    assert response != null;
+                    List<PlaceLikelihood> responseList = response.getPlaceLikelihoods();
+                    //Collections.sort(responseList, (o1, o2) -> Double.compare(o2.getLikelihood(), o1.getLikelihood()));
+                    for (PlaceLikelihood placeLikelihood : responseList) {
+                        if (Objects.requireNonNull(placeLikelihood.getPlace().getTypes()).contains(Place.Type.HEALTH)) {
+                            placesList.add(placeLikelihood.getPlace().getName());
                         }
                     }
+                    initScanButton(activity);
+                    initSpinner();
+                } else {
+                    Exception exception = task.getException();
+                    if (exception instanceof ApiException) {
+                        ApiException apiException = (ApiException) exception;
+                        Log.e(TAG, "Place not found: " + apiException.getStatusCode());
+                    }
                 }
-            }
+            });
         } else {
-            // Permission to access the location is missing. Show rationale and request permission
             PermissionUtils.requestPermission(this, LOCATION_PERMISSION_REQUEST_CODE,
                     Manifest.permission.ACCESS_FINE_LOCATION, true);
-        }
-        if (locationManager != null) {
-            locationManager.removeUpdates(this);
         }
     }
 
     private void initViews() {
         textViewInstructions = findViewById(R.id.textViewRegisterNewVaccine);
         buttonScan = findViewById(R.id.buttonScan);
+    }
+
+    private void initSpinner(){
+        spinnerPlaces = findViewById(R.id.spinnerPlaces);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, placesList);
+        spinnerPlaces.setAdapter(dataAdapter);
+
+        spinnerPlaces.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                locationName = parent.getItemAtPosition(position).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Nothing Happens
+            }
+        });
+    }
+
+    private void initScanButton(Activity activity) {
+        buttonScan.setOnClickListener(v -> {
+            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.CAMERA}, PackageManager.PERMISSION_GRANTED);
+            intentIntegrator = new IntentIntegrator(activity);
+            intentIntegrator.setBeepEnabled(false);
+            intentIntegrator.initiateScan();
+        });
     }
 
     @Override
@@ -177,24 +217,5 @@ public class ScanActivity extends AppCompatActivity implements LocationListener 
                 Toast.makeText(ScanActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        // TODO Auto-generated method stub
-    }
-    @Override
-    public void onProviderDisabled(String provider) {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-        // TODO Auto-generated method stub
     }
 }

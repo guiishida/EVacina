@@ -51,6 +51,7 @@
 
     <!-- Register New Vaccine Service -->
     <string name="register_new_vaccine_field">Para registrar uma nova vacina, basta scanear o código de barras da mesma, apertando o botão abaixo</string>
+    <string name="choose_place">Selecione o local onde você está</string>
     <string name="button_scan">Scanear</string>
     <string name="textview2">TextView2</string>
     <string name="nova_vacina">Nova Vacina</string>
