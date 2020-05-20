@@ -23,8 +23,8 @@ import retrofit2.Response;
 public class NewVaccineActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "NewVaccineActivity";
-    private String name_vaccine, producer, disease, Email;
-    private Long barcode, vaccine_id;
+    private String name_vaccine, producer, disease, Email, locationName;
+    private Long barcode;
 
     VaccineService vaccineService;
     TextView name_vaccineTv, producerTv, diseaseTv, barcodeTv;
@@ -63,6 +63,7 @@ public class NewVaccineActivity extends AppCompatActivity implements View.OnClic
         disease = intent.getStringExtra("disease");
         producer = intent.getStringExtra("producer");
         Email = intent.getStringExtra("email");
+        locationName = intent.getStringExtra("locationName");
     }
 
     @Override
@@ -83,7 +84,7 @@ public class NewVaccineActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void doRegister(){
-        Call<Boolean> call = vaccineService.register_add(barcode, Email);
+        Call<Boolean> call = vaccineService.register_add(barcode, Email, locationName);
         call.enqueue(new Callback<Boolean>() {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {

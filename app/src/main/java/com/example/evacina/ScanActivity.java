@@ -6,12 +6,11 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.Log;
+
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -79,7 +78,7 @@ public class ScanActivity extends AppCompatActivity {
         }
 
         // Initialize the SDK
-        Places.initialize(getApplicationContext(), "API_KEY_HERE");
+        Places.initialize(getApplicationContext(), "YOUR_API_KEY_HERE");
 
         // Create a new Places client instance
         placesClient = Places.createClient(this);
@@ -108,10 +107,12 @@ public class ScanActivity extends AppCompatActivity {
         FindCurrentPlaceRequest request = FindCurrentPlaceRequest.newInstance(placeFields);
 
         // Call findCurrentPlace and handle the response (first check that the user has granted permission).
+        Log.d(TAG, "Request para a Places API");
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             Task<FindCurrentPlaceResponse> placeResponse = placesClient.findCurrentPlace(request);
             placeResponse.addOnCompleteListener(task -> {
                 if (task.isSuccessful()){
+                    Log.d(TAG, "Places API Request Response is OK");
                     FindCurrentPlaceResponse response = task.getResult();
                     assert response != null;
                     List<PlaceLikelihood> responseList = response.getPlaceLikelihoods();
@@ -203,6 +204,7 @@ public class ScanActivity extends AppCompatActivity {
                         intent.putExtra("nameVaccine", resObject.getName_vaccine());
                         intent.putExtra("disease", resObject.getDisease());
                         intent.putExtra("producer", resObject.getProducer());
+                        intent.putExtra("locationName", locationName);
                         startActivity(intent);
                     }
                     else {

@@ -51,7 +51,7 @@
 
     <!-- Register New Vaccine Service -->
     <string name="register_new_vaccine_field">Para registrar uma nova vacina, basta scanear o código de barras da mesma, apertando o botão abaixo</string>
-    <string name="choose_place">Selecione o local onde você está</string>
+    <string name="choose_place">Selecione o local onde você está: </string>
     <string name="button_scan">Scanear</string>
     <string name="textview2">TextView2</string>
     <string name="nova_vacina">Nova Vacina</string>
@@ -70,11 +70,11 @@
     <string name="carteira">Carteira de Vacinação</string>
     <string name="date_text">Date</string>
     <string name="voltar">Voltar</string>
+    <string name="location_text">Location Name</string>
 
     <!--Permission Utils -->
     <string name="title_activity_maps">Map</string>
     <string name="location_permission_denied">location_permission_denied</string>
     <string name="permission_required_toast">permission_required_toast</string>
     <string name="permission_rationale_location">permission_rationale_location</string>
-    <string name="choose_place">Selecione o local onde você está:</string>
 </resources>
