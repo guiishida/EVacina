@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +23,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class RegisterActivity extends AppCompatActivity {
+
+    private static final String TAG = "RegisterActivity";
 
     Button buttonSignIn, buttonSignUp;
     EditText editTextFullName, editTextCPF, editTextBirthDate, editTextEmail, editTextPassword, editTextConfirmedPassword;
@@ -51,6 +54,7 @@ public class RegisterActivity extends AppCompatActivity {
                     Boolean AllergyYeast = checkboxAllergyYeast.isChecked();
                     Boolean AllergyJello = checkboxAllergyJello.isChecked();
 
+                    Log.d(TAG,"Start of the POST HTTP Request to Register User");
                     registerUser(Email, Password, BirthDate, CPF, FullName, AllergyEgg, AllergyProtein, AllergyJello, AllergyYeast);
                 }
             }
@@ -73,11 +77,12 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<RegisterResponseObjectModel> call, Response<RegisterResponseObjectModel> response) {
                 if (response.isSuccessful()) {
+                    Log.d(TAG, "Request Response is OK");
                     RegisterResponseObjectModel resObject = response.body();
 
                     if (resObject.getOk()) {
                         Toast.makeText(RegisterActivity.this, "Cadastro Efetuado com Sucesso!", Toast.LENGTH_SHORT).show();
-
+                        Log.d(TAG, "user has just signed up with email: " + email);
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
@@ -99,11 +104,13 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                 }
                 else{
-                    Toast.makeText(RegisterActivity.this, response.code(), Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "The request response was not successful: " + response.code());
+                    Toast.makeText(RegisterActivity.this, "A requisição não obteve sucesso. Tente novamente", Toast.LENGTH_SHORT).show();
                 }
             }
             @Override
             public void onFailure(Call<RegisterResponseObjectModel> call, Throwable t) {
+                Log.e(TAG, "The request to the server failed: " + t.getMessage());
                 Toast.makeText(RegisterActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

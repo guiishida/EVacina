@@ -3,6 +3,7 @@ package com.example.evacina;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -21,8 +22,10 @@ import retrofit2.Response;
 
 public class NewVaccineActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private static final String TAG = "NewVaccineActivity";
     private String name_vaccine, producer, disease, Email;
     private Long barcode, vaccine_id;
+
     VaccineService vaccineService;
     TextView name_vaccineTv, producerTv, diseaseTv, barcodeTv;
     Button buttonConfirma, buttonCancela;
@@ -59,7 +62,6 @@ public class NewVaccineActivity extends AppCompatActivity implements View.OnClic
         barcode = intent.getLongExtra("barcode", 0L);
         disease = intent.getStringExtra("disease");
         producer = intent.getStringExtra("producer");
-        vaccine_id = intent.getLongExtra("vaccine_id",0L);
         Email = intent.getStringExtra("email");
     }
 
@@ -67,14 +69,12 @@ public class NewVaccineActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.buttonConfirma:
-                Toast.makeText(NewVaccineActivity.this,"Vacina registrada com sucesso", Toast.LENGTH_LONG).show();
-                Intent mainMenuIntent = new Intent (NewVaccineActivity.this, MainMenuActivity.class);
-                mainMenuIntent.putExtra("email", Email);
-                startActivity(mainMenuIntent);
+                vaccineService = ApiUtils.getVaccineService();
+                Log.d(TAG, "Start of Post Request to save vaccine on the database");
+                doRegister();
                 break;
             case R.id.buttonCancela:
-                vaccineService = ApiUtils.getVaccineService();
-                doRegisterCancel();
+                Toast.makeText(NewVaccineActivity.this, "Registro Cancelado", Toast.LENGTH_LONG).show();
                 Intent scanIntent = new Intent(NewVaccineActivity.this, ScanActivity.class);
                 scanIntent.putExtra("email", Email);
                 startActivity(scanIntent);
@@ -82,27 +82,36 @@ public class NewVaccineActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
-    public void doRegisterCancel(){
-        Call<Boolean> call = vaccineService.register_cancel(vaccine_id);
+    public void doRegister(){
+        Call<Boolean> call = vaccineService.register_add(barcode, Email);
         call.enqueue(new Callback<Boolean>() {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                 if (response.isSuccessful()){
+                    Log.d(TAG, "Request Response is OK");
                     Boolean resObject = response.body();
                     if (resObject) {
-                        Toast.makeText(NewVaccineActivity.this, "Registro Cancelado", Toast.LENGTH_LONG).show();
+                        Toast.makeText(NewVaccineActivity.this,"Vacina registrada com sucesso", Toast.LENGTH_LONG).show();
+                        Intent mainMenuIntent = new Intent (NewVaccineActivity.this, MainMenuActivity.class);
+                        mainMenuIntent.putExtra("email", Email);
+                        startActivity(mainMenuIntent);
                     }
                     else{
-                        Toast.makeText(NewVaccineActivity.this, "Registro não foi Cancelado", Toast.LENGTH_LONG).show();
+                        Toast.makeText(NewVaccineActivity.this, "Ocorreu um Problema no Registro da Vacina. Tente Novamente", Toast.LENGTH_LONG).show();
+                        Intent scanIntent = new Intent(NewVaccineActivity.this, ScanActivity.class);
+                        scanIntent.putExtra("email", Email);
+                        startActivity(scanIntent);
                     }
                 }
                 else{
-                    Toast.makeText(NewVaccineActivity.this, response.code(), Toast.LENGTH_LONG).show();
+                    Log.e(TAG, "The request response was not successful: " + response.code());
+                    Toast.makeText(NewVaccineActivity.this, "A requisição não obteve sucesso. Tente novamente", Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Boolean> call, Throwable t) {
+                Log.e(TAG, "The request to the server failed: " + t.getMessage());
                 Toast.makeText(NewVaccineActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
