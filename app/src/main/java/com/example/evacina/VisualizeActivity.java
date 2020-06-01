@@ -28,7 +28,7 @@ public class VisualizeActivity extends AppCompatActivity {
 
     GridView grid_view;
     VaccineAdapter vaccineAdapter;
-    ArrayList<VaccineView> vaccineViewArrayList = new ArrayList<VaccineView>();
+    ArrayList<VaccineView> vaccineViewArrayList = new ArrayList<>();
     VaccineService vaccineService;
     Button buttonMenu;
 
