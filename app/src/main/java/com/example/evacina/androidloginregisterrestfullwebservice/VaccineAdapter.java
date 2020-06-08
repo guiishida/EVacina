@@ -2,76 +2,88 @@ package com.example.evacina.androidloginregisterrestfullwebservice;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.evacina.R;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
 
-public class VaccineAdapter extends BaseAdapter {
-
+public class VaccineAdapter extends RecyclerView.Adapter<VaccineAdapter.vaccineViewHolder> {
     private ArrayList<VaccineView> vaccinesList;
-    private LayoutInflater layoutInflater;
 
-    public VaccineAdapter(Activity activity, ArrayList<VaccineView> vaccinesList) {
+    public VaccineAdapter(ArrayList<VaccineView> vaccinesList) {
         this.vaccinesList = vaccinesList;
-        layoutInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    @Override
-    public int getCount() {
-        return vaccinesList.size();
-    }
+    static class vaccineViewHolder extends RecyclerView.ViewHolder {
+        private TextView name_vaccine;
+        private TextView date;
+        private TextView location_name;
 
-    @Override
-    public Object getItem(int i) {
-        return vaccinesList.get(i);
-    }
+        vaccineViewHolder(View itemView) {
+            super(itemView);
 
-    @Override
-    public long getItemId(int i) {
-        return i;
-    }
-
-    private static class ViewHolder{
-        TextView disease_text,name_vaccine, date, locationName;
-    }
-
-
-    // create a new ImageView for each item referenced by the Adapter
-    @Override
-    public View getView(int position, View view, ViewGroup viewGroup) {
-
-        View vi = view;
-        ViewHolder viewHolder = null;
-        if(vi == null){
-            // create  viewholder object
-            viewHolder = new ViewHolder();
-            // inflate vaccine_adapter for each row
-            vi = layoutInflater.inflate(R.layout.vaccine_adapter, null);
-            viewHolder.disease_text = vi.findViewById(R.id.disease_text);
-            viewHolder.name_vaccine = vi.findViewById(R.id.name_vaccine);
-            viewHolder.date = vi.findViewById(R.id.date);
-            viewHolder.locationName = vi.findViewById(R.id.locationName);
-            /*We can use setTag() and getTag() to set and get custom objects as per our requirement.
-            The setTag() method takes an argument of type Object, and getTag() returns an Object.*/
-            vi.setTag(viewHolder);
-        }else {
-            /* We recycle a View that already exists */
-            viewHolder = (ViewHolder) vi.getTag();
+            name_vaccine = itemView.findViewById(R.id.name_vaccine);
+            date = itemView.findViewById(R.id.date);
+            location_name = itemView.findViewById(R.id.locationName);
         }
 
-        viewHolder.disease_text.setText(vaccinesList.get(position).getDisease());
-        viewHolder.name_vaccine.setText(vaccinesList.get(position).getName());
-        viewHolder.date.setText(vaccinesList.get(position).getDate());
-        viewHolder.locationName.setText(vaccinesList.get(position).getLocation());
+        void setName_vaccine(String name, int position){
+            this.name_vaccine.setText(name);
+            if (position == 0){
+                this.name_vaccine.setHighlightColor(Color.DKGRAY);
+                this.name_vaccine.setTypeface(null, Typeface.BOLD);
+            }
+        }
 
+        void setLocation_name(String location) {
+            this.location_name.setText(location);
+        }
 
-        return vi;
+        void setDate(String d) {
+            this.date.setText(d);
+        }
+    }
+
+    @NonNull
+    @Override
+    public vaccineViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+
+        View v = layoutInflater.inflate(R.layout.vaccine_adapter, parent, false);
+        return new vaccineViewHolder(v);
+    }
+
+    @Override
+    public void onBindViewHolder(vaccineViewHolder holder, int position) {
+        final VaccineView vaccine = vaccinesList.get(position);
+        holder.setName_vaccine(vaccine.getName(),position);
+        holder.setDate(vaccine.getDate());
+        holder.setLocation_name(vaccine.getLocation());
+
+        if (position ==0) {
+            ViewGroup.LayoutParams params = holder.itemView.getLayoutParams();
+            params.width = 150;
+            holder.itemView.setLayoutParams(params);
+            holder.location_name.setVisibility(View.GONE);
+            holder.date.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public int getItemCount() {
+        return vaccinesList.size();
     }
 }

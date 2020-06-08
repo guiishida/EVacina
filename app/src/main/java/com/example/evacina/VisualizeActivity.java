@@ -6,15 +6,23 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.LinearLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.evacina.androidloginregisterrestfullwebservice.ApiUtils;
 import com.example.evacina.androidloginregisterrestfullwebservice.VaccineService;
 import com.example.evacina.androidloginregisterrestfullwebservice.VaccineAdapter;
 import com.example.evacina.androidloginregisterrestfullwebservice.VaccineView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -26,9 +34,9 @@ public class VisualizeActivity extends AppCompatActivity {
 
     private static final String TAG = "VisualizeActivity";
 
-    GridView grid_view;
+    LinearLayout linearLayout;
     VaccineAdapter vaccineAdapter;
-    ArrayList<VaccineView> vaccineViewArrayList = new ArrayList<>();
+    ArrayList<ArrayList<VaccineView>> vaccineTable = new ArrayList<ArrayList<VaccineView>>();
     VaccineService vaccineService;
     Button buttonMenu;
 
@@ -56,13 +64,13 @@ public class VisualizeActivity extends AppCompatActivity {
 
 
     public void getData(){
-        Call<ArrayList<VaccineView>> call = vaccineService.vaccine_list(Email);
-        call.enqueue(new Callback<ArrayList<VaccineView>>() {
+        Call<ArrayList<ArrayList<VaccineView>>> call = vaccineService.vaccine_list(Email);
+        call.enqueue(new Callback<ArrayList<ArrayList<VaccineView>>>() {
             @Override
-            public void onResponse(Call<ArrayList<VaccineView>> call, Response<ArrayList<VaccineView>> response) {
+            public void onResponse(Call<ArrayList<ArrayList<VaccineView>>> call, Response<ArrayList<ArrayList<VaccineView>>> response) {
                 if (response.isSuccessful()){
                     Log.d(TAG, "Request Response is OK");
-                    vaccineViewArrayList = response.body();
+                    vaccineTable = response.body();
                     initGrid();
                 }
                 else{
@@ -75,7 +83,7 @@ public class VisualizeActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ArrayList<VaccineView>> call, Throwable t) {
+            public void onFailure(Call<ArrayList<ArrayList<VaccineView>>> call, Throwable t) {
                 Log.e(TAG, "The request to the server failed: " + t.getMessage());
                 Toast.makeText(VisualizeActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
                 Intent mainMenuIntent = new Intent (VisualizeActivity.this, MainMenuActivity.class);
@@ -98,8 +106,19 @@ public class VisualizeActivity extends AppCompatActivity {
     }
 
     private void initGrid() {
-        grid_view = findViewById(R.id.grid_view);
-        vaccineAdapter = new VaccineAdapter(this, vaccineViewArrayList);
-        grid_view.setAdapter(vaccineAdapter);
+        linearLayout = findViewById(R.id.visualizeLayout);
+
+        for (ArrayList<VaccineView> vaccineViewArrayList:vaccineTable) {
+            // Creating vaccine rows
+            RecyclerView recyclerView = new RecyclerView(this);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+            recyclerView.setLayoutManager(layoutManager);
+
+            vaccineAdapter = new VaccineAdapter(vaccineViewArrayList);
+            recyclerView.setAdapter(vaccineAdapter);
+
+            // Adding Row to Table
+            linearLayout.addView(recyclerView,0);
+        }
     }
 }

@@ -16,5 +16,5 @@ public interface VaccineService {
     Call<Boolean> register_add(@Query("barcode") Long barcode, @Query("email") String email, @Query("locationName") String locationName);
 
     @GET("vaccine/list")
-    Call<ArrayList<VaccineView>> vaccine_list(@Query("email")String email);
+    Call<ArrayList<ArrayList<VaccineView>>> vaccine_list(@Query("email")String email);
 }

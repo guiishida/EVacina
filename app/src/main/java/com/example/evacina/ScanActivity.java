@@ -78,7 +78,7 @@ public class ScanActivity extends AppCompatActivity {
         }
 
         // Initialize the SDK
-        Places.initialize(getApplicationContext(), "YOUR_API_KEY_HERE");
+        Places.initialize(getApplicationContext(), "AIzaSyCVtiE5Ft1BhsZ5yccABuhEY8YUhIIFr3I");
 
         // Create a new Places client instance
         placesClient = Places.createClient(this);

@@ -3,7 +3,6 @@ package com.example.evacina.androidloginregisterrestfullwebservice;
 public class VaccineView {
     private String name;
     private String date;
-    private String disease;
     private String location;
 
     public String getName() {
@@ -30,18 +29,9 @@ public class VaccineView {
         this.date = date;
     }
 
-    public String getDisease() {
-        return disease;
-    }
-
-    public void setDisease(String disease) {
-        this.disease = disease;
-    }
-
-    public VaccineView(String name, String date, String disease, String location) {
+    public VaccineView(String name, String date, String location) {
         this.name = name;
         this.date = date;
-        this.disease = disease;
         this.location = location;
     }
 }
