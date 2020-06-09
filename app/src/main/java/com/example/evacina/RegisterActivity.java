@@ -86,7 +86,6 @@ public class RegisterActivity extends AppCompatActivity {
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-
                                 Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                                 intent.putExtra("email", email);
                                 intent.putExtra("password", password);
@@ -188,7 +187,6 @@ public class RegisterActivity extends AppCompatActivity {
         }
         return valid;
     }
-
 
 }
 
