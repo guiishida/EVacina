@@ -80,7 +80,7 @@ public class VaccineAdapter extends RecyclerView.Adapter<VaccineAdapter.vaccineV
                 holder.itemView.getBackground().setTint(Color.argb(102,0,101,80));
                 break;
             case "Pending":
-                holder.itemView.getBackground().setTint(Color.argb(102,155,188,80));
+                holder.itemView.getBackground().setTint(Color.argb(102,255,188,80));
                 break;
             case "Urgent":
                 holder.itemView.getBackground().setTint(Color.argb(102,255,15,15));
