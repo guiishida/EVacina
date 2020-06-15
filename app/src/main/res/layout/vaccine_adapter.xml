@@ -15,7 +15,8 @@
         android:layout_height="wrap_content"
         android:gravity="center|center_horizontal|center_vertical"
         android:text="@string/name_vaccine_text"
-        android:textAlignment="center" />
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimaryBlack" />
 
     <TextView
         android:id="@+id/date"
@@ -23,12 +24,14 @@
         android:layout_height="wrap_content"
         android:gravity="center|center_horizontal"
         android:text="@string/date_text"
-        android:textAlignment="center" />
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimaryBlack" />
 
     <TextView
         android:id="@+id/locationName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center|center_horizontal"
-        android:text="@string/location_text" />
+        android:text="@string/location_text"
+        android:textColor="@color/colorPrimaryBlack" />
 </LinearLayout>
