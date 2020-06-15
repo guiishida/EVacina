@@ -4,9 +4,18 @@ public class VaccineView {
     private String name;
     private String date;
     private String location;
+    private String status;
 
     public String getName() {
         return name;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getLocation() {
@@ -29,9 +38,10 @@ public class VaccineView {
         this.date = date;
     }
 
-    public VaccineView(String name, String date, String location) {
+    public VaccineView(String name, String date, String location, String status) {
         this.name = name;
         this.date = date;
         this.location = location;
+        this.status = status;
     }
 }

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,9 +43,9 @@ public class VaccineAdapter extends RecyclerView.Adapter<VaccineAdapter.vaccineV
 
         void setName_vaccine(String name, int position){
             this.name_vaccine.setText(name);
+            this.name_vaccine.setTypeface(null, Typeface.BOLD);
             if (position == 0){
-                this.name_vaccine.setHighlightColor(Color.DKGRAY);
-                this.name_vaccine.setTypeface(null, Typeface.BOLD);
+                this.name_vaccine.setTextColor(Color.BLACK);
             }
         }
 
@@ -72,6 +73,22 @@ public class VaccineAdapter extends RecyclerView.Adapter<VaccineAdapter.vaccineV
         holder.setName_vaccine(vaccine.getName(),position);
         holder.setDate(vaccine.getDate());
         holder.setLocation_name(vaccine.getLocation());
+        String status = vaccine.getStatus();
+
+        switch (status){
+            case "Ok":
+                holder.itemView.getBackground().setTint(Color.argb(102,0,101,80));
+                break;
+            case "Pending":
+                holder.itemView.getBackground().setTint(Color.argb(102,155,188,80));
+                break;
+            case "Urgent":
+                holder.itemView.getBackground().setTint(Color.argb(102,255,15,15));
+                break;
+            default:
+                holder.itemView.getBackground().setTint(Color.argb(102,128,128,128));
+                break;
+        }
 
         if (position ==0) {
             ViewGroup.LayoutParams params = holder.itemView.getLayoutParams();
