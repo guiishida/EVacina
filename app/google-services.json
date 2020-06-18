@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1020092629542",
+    "firebase_url": "https://evacinas-fd4fe.firebaseio.com",
+    "project_id": "evacinas-fd4fe",
+    "storage_bucket": "evacinas-fd4fe.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1020092629542:android:19779c3510c00d416f1ce7",
+        "android_client_info": {
+          "package_name": "com.example.evacina"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1020092629542-6d3k5k9h3dvovo3348k3o49eft786ohn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAoNvRGnRhstMpb6LESEt5eBMdeIgcGIT8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1020092629542-6d3k5k9h3dvovo3348k3o49eft786ohn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
