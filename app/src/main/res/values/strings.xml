@@ -1,3 +1,80 @@
 <resources>
+
     <string name="app_name">EVacina</string>
+    <string name="app_logo_description">app logo</string>
+
+
+    <!-- Login and Register Pages-->
+    <string name="button_sign_in">ENTRAR</string>
+    <string name="button_sign_up">CADASTRAR-SE</string>
+    <string name="email_field">Email</string>
+    <string name="password_field">Senha</string>
+    <string name="no_account_field">Não possui uma conta?</string>
+    <string name="powered_by">Powered By Guilherme Ishida &amp; Gustavo Greco</string>
+    <string name="contentDescriptionLogo">Logo da Aplicação</string>
+    <string name="login_hint">Inserir email</string>
+    <string name="password_hint">Inserir senha</string>
+
+    <string name="complete_name_field">Nome Completo</string>
+    <string name="complete_name_hint">Inserir Nome Completo</string>
+    <string name="cpf_field">CPF</string>
+    <string name="cpf_hint">Inserir CPF</string>
+    <string name="birth_date_field">Data de Nascimento</string>
+    <string name="birth_date_hint">Inserir Data de Nascimento</string>
+    <string name="confirm_password_field">Confirme a senha</string>
+    <string name="confirm_password_hint">Repetir senha</string>
+
+
+    <string name="has_account_field">Já possui uma conta?</string>
+
+    <!-- Alergias -->
+    <string name="allergies_field">Selecionar alergias, se existirem</string>
+    <string name="allergy_egg">Alergia a Ovo</string>
+    <string name="allergy_protein_cow_milk">Alergia à Proteina do Leite da Vaca</string>
+    <string name="allergy_jello">Alergia à Gelatina</string>
+    <string name="allergy_yeast">Alergia à Levedura</string>
+
+    <!-- Action Bar -->
+    <string name="user_main_menu">Minha Carteira</string>
+    <string name="registrar_vacina">Registrar Nova Vacina</string>
+
+    <!-- Buttons Main Menu -->
+    <string name="button_new_vaccine">Registrar Nova Vacina</string>
+    <string name="button_visualize">Consultar Histórico de Vacinas</string>
+    <string name="button_generate_pdf">Gerar PDF da Carteira</string>
+    <string name="button_generate_certificates">Gerar Certificados</string>
+    <string name="button_maps">Recomendação Locais de Vacinação (MAPS)</string>
+    <string name="button_pending_vaccines">Vacinas Pendentes</string>
+
+    <string name="process">Process</string>
+    <string name="todo">TODO</string>
+
+    <!-- Register New Vaccine Service -->
+    <string name="register_new_vaccine_field">Para registrar uma nova vacina, basta scanear o código de barras da mesma, apertando o botão abaixo</string>
+    <string name="choose_place">Selecione o local onde você está: </string>
+    <string name="button_scan">Scanear</string>
+    <string name="textview2">TextView2</string>
+    <string name="nova_vacina">Nova Vacina</string>
+
+    <string name="button_confirma">Confirma</string>
+    <string name="codigodebarras">Código de Barras:</string>
+    <string name="name_vaccine_text">Vaccine Name</string>
+    <string name="disease_text">Disease</string>
+    <string name="producer_text">Producer</string>
+    <string name="barcode_text">Barcode</string>
+    <string name="cancela">Cancela</string>
+    <string name="textConfirma">Confirme se as informações da sua vacina estão corretas: </string>
+    <string name="fabricante">Fabricante:</string>
+
+    <!-- Visualize Service -->
+    <string name="carteira">Carteira de Vacinação</string>
+    <string name="date_text">Date</string>
+    <string name="voltar">Voltar</string>
+    <string name="location_text">Location Name</string>
+
+    <!--Permission Utils -->
+    <string name="title_activity_maps">Map</string>
+    <string name="location_permission_denied">location_permission_denied</string>
+    <string name="permission_required_toast">permission_required_toast</string>
+    <string name="permission_rationale_location">permission_rationale_location</string>
 </resources>
